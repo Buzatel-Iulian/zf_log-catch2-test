@@ -1,0 +1,7 @@
+cd build
+
+conan install ..
+
+cmake .. -G "Visual Studio 16 2019"    // for windows
+
+cmake --build . --config Release

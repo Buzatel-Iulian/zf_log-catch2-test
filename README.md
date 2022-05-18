@@ -1,4 +1,4 @@
-## This is a test repository to verify the correct interaction betwen thw following two libraries:
+## This is a test repository to verify the correct interaction betwen the following two libraries:
 
 
 zf_log

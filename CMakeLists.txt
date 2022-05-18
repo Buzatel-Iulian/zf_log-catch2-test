@@ -4,8 +4,20 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 if(NOT DEFINED CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 endif()
+##############################################################
+set(CMAKE_SYSTEM_NAME Windows)
 
+SET(CMAKE_C_COMPILER x86-64-w64-mingw32-gcc)
+SET(CMAKE_CXX_COMPILER x86-64-w64-mingw32-g++)
+SET(CMAKE_RC_COMPILER x86-64-w64-mingw32-windres)
+set(CMAKE_RANLIB x86-64-w64-mingw32-ranlib)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fPIC -fno-stack-protector -fno-unroll-loops -fomit-frame-pointer -Wno-ignored-optimization-argument")
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
+##############################################################
 project(zf_log)
+
+#add_definitions(" --hosted mingw-w64")
 
 set(INSTALL_INCLUDE_DIR include CACHE PATH
 	"Installation directory for header files")
@@ -13,9 +25,9 @@ set(INSTALL_LIB_DIR lib CACHE PATH
 	"Installation directory for libraries")
 set(INSTALL_CMAKE_DIR lib/cmake/zf_log CACHE PATH
 	"Installation directory for CMake files")
-set(ZF_LOG_LIBRARY_PREFIX CACHE STRING
-	"Prefix for all linker symbols exported by the library")
-option(ZF_LOG_CONFIGURE_INSTALL "Generate install target" ON)
+#set(ZF_LOG_LIBRARY_PREFIX CACHE STRING
+#	"Prefix for all linker symbols exported by the library")
+option(ZF_LOG_CONFIGURE_INSTALL "Generate install target" OFF)
 option(ZF_LOG_EXAMPLES "Build examples" OFF)
 option(ZF_LOG_TESTS "Build tests" OFF)
 option(ZF_LOG_PERF_TESTS "Build performance tests (requires Python)" OFF)
@@ -26,6 +38,15 @@ option(ZF_LOG_USE_CONFIG_HEADER "Include zf_log_config.h header file in zf_log c
 option(ZF_LOG_OPTIMIZE_SIZE "Optimize for size (prefer size over speed)" OFF)
 
 add_subdirectory(zf_log)
+
+add_library(shared_lib.dll SHARED zf_log/zf_log.c zf_log/zf_log.h)
+#set_target_properties(shared_lib.dll PROPERTIES
+#        PREFIX ""
+#        SUFFIX ""
+#        LINK_FLAGS "-W"
+#        POSITION_INDEPENDENT_CODE 0 # this is to avoid MinGW warning; 
+        # MinGW generates position-independent-code for DLL by default
+#)
 
 if(ZF_LOG_EXAMPLES)
 	add_subdirectory(examples)

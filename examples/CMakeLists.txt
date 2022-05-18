@@ -18,18 +18,20 @@ endif()
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+link_directories(../build/zf_log)
+
 add_executable(hello_c hello.c)
-target_link_libraries(hello_c ../zf_log)
+target_link_libraries(hello_c zf_log)
 
 add_executable(custom_output custom_output.c)
-target_link_libraries(custom_output ../zf_log)
+target_link_libraries(custom_output zf_log)
 
 add_executable(file_output file_output.c)
-target_link_libraries(file_output ../zf_log)
+target_link_libraries(file_output zf_log)
 
 add_executable(args_eval args_eval.c)
-target_link_libraries(args_eval ../zf_log)
+target_link_libraries(args_eval zf_log)
 
 add_executable(logtest logtest.cpp)
 target_link_libraries(logtest ${CONAN_LIBS})
-target_link_libraries(logtest ../zf_log)
+target_link_libraries(logtest zf_log)
